@@ -1,4 +1,5 @@
-﻿using ModelLayer;
+﻿using BusinessLogicLayer;
+using ModelLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +11,30 @@ namespace ServiceLayer.Controllers
 {
     public class DistrictController : ApiController
     {
-        public IHttpActionResult Get(int id)
-        {
-            // if found return ok(result) else return notfound() 
+        IDistrictBLL districtBLL;
 
-            return Ok();
+        // Constructor dependency injection (use IoC containers instead)
+        public DistrictController(IDistrictBLL districtBLL)
+        {
+            this.districtBLL = districtBLL;
+        }
+        public DistrictController()
+        {
+            districtBLL = new DistrictBLL();
+        } 
+
+        // Get single instance by ID
+        public HttpResponseMessage Get(int id)
+        {
+            District district = districtBLL.getById(id);
+            return Request.CreateResponse(HttpStatusCode.OK, district);
         }
 
-        public IHttpActionResult Get()
+        // Get all instances 
+        public HttpResponseMessage Get()
         {
-            return Ok();
+            List<District> districts = districtBLL.getAll();
+            return Request.CreateResponse(HttpStatusCode.OK,districts);        
         }
 
         public IHttpActionResult Put(int id, District obj)

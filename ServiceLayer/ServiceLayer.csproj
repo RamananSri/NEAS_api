@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
+    <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Controllers\SalespersonController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Global.asax.cs">
