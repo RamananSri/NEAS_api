@@ -11,6 +11,7 @@ namespace ModelLayer
         public int ID { get; set; }
         public string Franchise { get; set; }
 
+        public int? DistrictID { get; set; }
         public District District { get; set; }
     }
 }

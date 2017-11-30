@@ -106,6 +106,7 @@ namespace DataAccessLayer
 
                         // Store
                         Store s = new Store();
+                        s.DistrictID = d.ID;
                         s.ID = Convert.ToInt32(reader["StoreID"].ToString());
                         s.Franchise = reader["StoreFranchice"].ToString();
 
@@ -143,48 +144,28 @@ namespace DataAccessLayer
 
         public District GetById(int id)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                string query = "";
+            //using (SqlConnection conn = new SqlConnection(connectionString))
+            //{
+            //    string query = "";
 
-                // Create SQL command with parameterized 
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@id", id);
+            //    // Create SQL command with parameterized 
+            //    SqlCommand cmd = new SqlCommand(query, conn);
+            //    cmd.Parameters.AddWithValue("@id", id);
 
-                conn.Open();
-                SqlCommand command = new SqlCommand(query, conn);
-                SqlDataReader reader = command.ExecuteReader();
-
-
-                while (reader.Read())
-                {
-                    
-
-                    //person = new SalesPerson
-                    //{
-                    //    ID = Convert.ToInt32(reader["ID"].ToString()),
-                    //    FirstName = reader["FirstName"].ToString(),
-                    //    LastName = reader["LastName"].ToString()
-                    //};
-
-                    //personList.Add(person);
-
-                }
-            }
+            //    conn.Open();
+            //    SqlCommand command = new SqlCommand(query, conn);
+            //    SqlDataReader reader = command.ExecuteReader();
 
 
+            //    while (reader.Read())
+            //    {
 
-            //    District district = new District();
-
-            //string query = "SELECT * "
-            //             + "FROM SalesPerson "
-            //             + "WHERE ID = ";
-
-            //throw new NotImplementedException();
+            //    }
+            //}
             return null;
         }
 
-        public void Update(int id, District obj)
+        public void Update(District obj)
         {
             throw new NotImplementedException();
         }

@@ -12,7 +12,7 @@ namespace DataAccessLayer.Interfaces
         List<District> GetAll();
         District GetById(int id);
         void Delete(int id);
-        void Update(int id, District obj);
+        void Update( District obj);
         void Create(District obj);
     }
 }

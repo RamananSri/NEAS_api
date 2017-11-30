@@ -23,37 +23,43 @@ namespace ServiceLayer.Controllers
             this.salesPersonDAL = salesPersonDAL;
         }
 
-        public HttpResponseMessage Get(){
-
-            return Request.CreateResponse(HttpStatusCode.InternalServerError);
-            //try
-            //{
-            //    List<SalesPerson> personList = salesPersonDAL.getAll();
-
-            //    return personList;
-            //}
-            //catch (Exception e)
-            //{
-            //    return Request.CreateResponse(HttpStatusCode.InternalServerError, e.Message);
-            //}
+        public List<SalesPerson> Get()
+        {
+                List<SalesPerson> personlist = salesPersonDAL.getAll();
+                return personlist;
         }
 
-        public IHttpActionResult Get(int id){
-            // if found return ok(result) else return notfound() 
+        public SalesPerson Get(int id){ 
 
-            return Ok();
+            return null;
         }
 
-        public IHttpActionResult Put(int id, SalesPerson obj){
-            return Ok();
+        public Response Put(int id, SalesPerson obj){
+            return null;
         }
 
-        public IHttpActionResult Delete(int id){
-            return Ok();
+        public Response Delete(int id){
+            try
+            {
+                salesPersonDAL.delete(id);
+                return new Response { Success = true, Message = "SalesPerson deleted" };
+            }
+            catch (Exception e)
+            {
+                return new Response { Success = false, Message = e.Message };
+            }
         }
 
-        public IHttpActionResult Post(SalesPerson obj){
-            return Ok();
+        public Response Post(SalesPerson obj){
+            try
+            {
+                salesPersonDAL.create(obj);
+                return new Response { Success = true, Message = "SalesPerson created" };
+            }
+            catch (Exception e)
+            {
+                return new Response {Success=false,Message=e.Message};
+            }
         }
     }
 }

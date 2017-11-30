@@ -1,9 +1,6 @@
 ﻿using DataAccessLayer.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ModelLayer;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -15,7 +12,7 @@ namespace DataAccessLayer
     {
         string connectionString;
 
-        // Constructors - connection string injection
+        #region Constructor DB connectionString injection
         public SalesPersonDAL()
         {
             connectionString = ConfigurationManager.ConnectionStrings["ConnectionStringLocal"].ConnectionString;   
@@ -24,69 +21,71 @@ namespace DataAccessLayer
         {
             this.connectionString = connectionString;
         }
+        #endregion
 
-
-
-        public bool delete(int id)
+        public void delete(int id)
         {
-            int affectedLines;
-
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     string query = "DELETE "
-                                 + "FROM Store "
+                                 + "FROM SalesPerson "
                                  + "WHERE ID = @id";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", id);
                     conn.Open();
-                    affectedLines = cmd.ExecuteNonQuery();
+                    int affectedLines = cmd.ExecuteNonQuery();
+
+                    // Return custom exception if no rows were affected
+                    if (affectedLines == 0)
+                    {
+                        throw new Exception("SalesPerson with specified ID not found");
+                    }
                 }
             }
-            catch (SqlException)
+            catch (SqlException e)
             {
-                // log Exception
-                throw;
-            };
-                       
-
-            if(affectedLines == 1)
-            {
-                return true;
+                // Log exception (Serilog?)
+                throw new Exception("Internal error");
             }
-
-            return false;
-                
         }
 
         public List<SalesPerson> getAll()
         {
             List<SalesPerson> personList = new List<SalesPerson>();
 
-            //string query = "SELECT * "
-            //             + "FROM SalesPerson";
-            //conn.Open();
-            //SqlCommand command = new SqlCommand(query, conn);
-            //IDataReader reader = command.ExecuteReader();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT * "
+                                 + "FROM SalesPerson";
 
-            //SalesPerson person;
+                    conn.Open();
+                    SqlCommand command = new SqlCommand(query, conn);
+                    IDataReader reader = command.ExecuteReader();
 
-            //while (reader.Read())
-            //{
-            //    person = new SalesPerson
-            //    {
-            //        ID = Convert.ToInt32(reader["ID"].ToString()),
-            //        FirstName = reader["FirstName"].ToString(),
-            //        LastName = reader["LastName"].ToString()
-            //    };
+                    while (reader.Read())
+                    {
+                        SalesPerson person = new SalesPerson
+                        {
+                            ID = Convert.ToInt32(reader["ID"].ToString()),
+                            FirstName = reader["FirstName"].ToString(),
+                            LastName = reader["LastName"].ToString()
+                        };
 
-            //    personList.Add(person);
-            //}
-            //conn.Close();
-             
-            return personList;
+                        personList.Add(person);
+                    }
+                }
+                return personList;
+            }
+            catch (SqlException)
+            {
+                // Log exception
+                return null;
+            }
         }
 
         public SalesPerson getById(int id)
@@ -94,9 +93,39 @@ namespace DataAccessLayer
             throw new NotImplementedException();
         }
 
-        public bool update(int id, SalesPerson obj)
+        public void update(SalesPerson obj)
         {
             throw new NotImplementedException();
+        }
+
+        public void create(SalesPerson obj)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "INSERT INTO SalesPerson(FirstName,LastName) "
+                                 + "VALUES(@firstName,@lastName)";
+
+                    // Create SQL command with parameterized 
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@firstName", obj.FirstName);
+                    cmd.Parameters.AddWithValue("@lastName", obj.LastName);
+                    conn.Open();
+                    int affectedLines = cmd.ExecuteNonQuery();
+
+                    // Return custom exception if no rows were affected
+                    if (affectedLines == 0)
+                    {
+                        throw new Exception("SalesPerson was not created");
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                // Log exception (Serilog?)
+                throw new Exception("Internal error");
+            }
         }
     }
 }

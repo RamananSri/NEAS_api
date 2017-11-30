@@ -11,7 +11,7 @@ namespace DataAccessLayer.Interfaces
     {
         List<Store> getAll();
         Store getById(int id);
-        bool delete(int id);
-        bool update(int id, Store obj);
+        void delete(int id);
+        void update(Store obj);
     }
 }

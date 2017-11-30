@@ -42,7 +42,7 @@ namespace ServiceLayer.Controllers
         public Response Put(int id, District obj)
         {
             //districtDAL.update(id, obj);
-            return new Response { Success = true, Message = "District updated" };
+            return new Response { Success = false, Message = "not implemented" };
         }
 
         public Response Delete(int id)
@@ -55,9 +55,7 @@ namespace ServiceLayer.Controllers
             catch (Exception e)
             {
                 return new Response { Success = false, Message = e.Message };
-            }
-
-            
+            }          
         }
 
         public Response Post(District obj)
