@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="District.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Response.cs" />
     <Compile Include="SalesPerson.cs" />
     <Compile Include="Store.cs" />
   </ItemGroup>

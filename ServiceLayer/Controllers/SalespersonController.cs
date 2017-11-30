@@ -1,41 +1,41 @@
-﻿using BusinessLogicLayer;
+﻿using DataAccessLayer;
+using DataAccessLayer.Interfaces;
 using ModelLayer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace ServiceLayer.Controllers
 {
     public class SalespersonController : ApiController
     {
-        ISalesPersonBLL salesPersonBLL;
+        ISalesPersonDAL salesPersonDAL;
 
+        // Constructor dependency injection (use IoC containers instead)
         public SalespersonController(){
-            salesPersonBLL = new SalesPersonBLL();
+            salesPersonDAL = new SalesPersonDAL();
         }
-        public SalespersonController(ISalesPersonBLL salesPersonBLL)
+        public SalespersonController(ISalesPersonDAL salesPersonDAL)
         {
-            this.salesPersonBLL = salesPersonBLL;
+            this.salesPersonDAL = salesPersonDAL;
         }
 
+        public HttpResponseMessage Get(){
 
+            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            //try
+            //{
+            //    List<SalesPerson> personList = salesPersonDAL.getAll();
 
-        public IHttpActionResult Get(){
-
-            List<SalesPerson> personList;
-
-            try
-            {
-                personList = salesPersonBLL.getAll();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            
-            return Ok(personList);
+            //    return personList;
+            //}
+            //catch (Exception e)
+            //{
+            //    return Request.CreateResponse(HttpStatusCode.InternalServerError, e.Message);
+            //}
         }
 
         public IHttpActionResult Get(int id){

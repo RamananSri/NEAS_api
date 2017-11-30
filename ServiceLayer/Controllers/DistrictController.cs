@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer;
+﻿using DataAccessLayer;
+using DataAccessLayer.Interfaces;
 using ModelLayer;
 using System;
 using System.Collections.Generic;
@@ -11,45 +12,58 @@ namespace ServiceLayer.Controllers
 {
     public class DistrictController : ApiController
     {
-        IDistrictBLL districtBLL;
+        IDistrictDAL districtDAL;
 
-        // Constructor dependency injection (use IoC containers instead)
-        public DistrictController(IDistrictBLL districtBLL)
+        // Constructors - dependency injection (use IoC containers instead)
+        public DistrictController(IDistrictDAL districtDAL)
         {
-            this.districtBLL = districtBLL;
+            this.districtDAL = districtDAL;
         }
         public DistrictController()
         {
-            districtBLL = new DistrictBLL();
+            districtDAL = new DistrictDAL();
         } 
 
         // Get single instance by ID
-        public HttpResponseMessage Get(int id)
+        public District Get(int id)
         {
-            District district = districtBLL.getById(id);
-            return Request.CreateResponse(HttpStatusCode.OK, district);
+            District district = districtDAL.GetById(id);
+            return district; 
         }
 
         // Get all instances 
-        public HttpResponseMessage Get()
+        public List<District> Get()
         {
-            List<District> districts = districtBLL.getAll();
-            return Request.CreateResponse(HttpStatusCode.OK,districts);        
+            List<District> districts = districtDAL.GetAll();
+            return districts;
         }
 
-        public IHttpActionResult Put(int id, District obj)
+
+        public Response Put(int id, District obj)
         {
-            return Ok();
+            //districtDAL.update(id, obj);
+            return new Response { Success = true, Message = "District updated" };
         }
 
-        public IHttpActionResult Delete(int id)
+        public Response Delete(int id)
         {
-            return Ok();
+            try
+            {
+                districtDAL.Delete(id);
+                return new Response { Success = true, Message = "District deleted" };
+            }
+            catch (Exception e)
+            {
+                return new Response { Success = false, Message = e.Message };
+            }
+
+            
         }
 
-        public IHttpActionResult Post(District obj)
+        public Response Post(District obj)
         {
-            return Ok();
+            //districtDAL.cre
+            return new Response { Success = true, Message = "District created" };
         }
 
     }

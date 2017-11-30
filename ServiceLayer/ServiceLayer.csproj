@@ -115,7 +115,6 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DistrictController.cs" />
-    <Compile Include="Controllers\IndexController.cs" />
     <Compile Include="Controllers\SalespersonController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Global.asax.cs">
@@ -139,9 +138,9 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BusinessLogicLayer\BusinessLogicLayer.csproj">
-      <Project>{eaeb6af7-808e-4924-9421-e5da16510684}</Project>
-      <Name>BusinessLogicLayer</Name>
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">
+      <Project>{a9a84e69-b567-4c1e-b035-8b087b5a7228}</Project>
+      <Name>DataAccessLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\ModelLayer\ModelLayer.csproj">
       <Project>{d024391b-2d3c-45b8-bbae-286d63d1a083}</Project>

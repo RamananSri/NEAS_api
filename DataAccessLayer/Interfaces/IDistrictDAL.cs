@@ -9,9 +9,10 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IDistrictDAL
     {
-        List<District> getAll();
-        District getById(int id);
-        bool delete(int id);
-        bool update(int id, District obj);
+        List<District> GetAll();
+        District GetById(int id);
+        void Delete(int id);
+        void Update(int id, District obj);
+        void Create(District obj);
     }
 }

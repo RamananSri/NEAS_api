@@ -10,31 +10,31 @@ namespace ServiceLayer.Controllers
 {
     public class StoreController : ApiController
     {
-        public IHttpActionResult Get(int id)
+        public Response Get(int id)
         {
             // if found return ok(result) else return notfound() 
 
-            return Ok();
+            return null;
         }
 
-        public IHttpActionResult Get()
+        public Response Get()
         {
-            return Ok();
+            return null;
         }
 
-        public IHttpActionResult Put(int id, Store obj)
+        public Response Put(int id, Store obj)
         {
-            return Ok();
+            return null;
         }
 
-        public IHttpActionResult Delete(int id)
+        public Response Delete(int id)
         {
-            return Ok();
+            return null;
         }
 
-        public IHttpActionResult Post(Store obj)
+        public Response Post(Store obj)
         {
-            return Ok();
+            return null;
         }
     }
 }

@@ -13,43 +13,78 @@ namespace DataAccessLayer
 {
     public class SalesPersonDAL : ISalesPersonDAL
     {
-        SqlConnection conn;
+        string connectionString;
 
+        // Constructors - connection string injection
         public SalesPersonDAL()
         {
-            string strcon = ConfigurationManager.ConnectionStrings["ConnectionStringLocal"].ConnectionString;
-            conn = new SqlConnection(strcon);     
+            connectionString = ConfigurationManager.ConnectionStrings["ConnectionStringLocal"].ConnectionString;   
         }
+        public SalesPersonDAL(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
+
+
 
         public bool delete(int id)
         {
-            throw new NotImplementedException();
+            int affectedLines;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "DELETE "
+                                 + "FROM Store "
+                                 + "WHERE ID = @id";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    conn.Open();
+                    affectedLines = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                // log Exception
+                throw;
+            };
+                       
+
+            if(affectedLines == 1)
+            {
+                return true;
+            }
+
+            return false;
+                
         }
 
         public List<SalesPerson> getAll()
         {
             List<SalesPerson> personList = new List<SalesPerson>();
 
-            string query = "SELECT * "
-                         + "FROM SalesPerson";
-            conn.Open();
-            SqlCommand command = new SqlCommand(query, conn);
-            IDataReader reader = command.ExecuteReader();
+            //string query = "SELECT * "
+            //             + "FROM SalesPerson";
+            //conn.Open();
+            //SqlCommand command = new SqlCommand(query, conn);
+            //IDataReader reader = command.ExecuteReader();
 
-            SalesPerson person;
+            //SalesPerson person;
 
-            while (reader.Read())
-            {
-                person = new SalesPerson
-                {
-                    ID = Convert.ToInt32(reader["ID"].ToString()),
-                    FirstName = reader["FirstName"].ToString(),
-                    LastName = reader["LastName"].ToString()
-                };
+            //while (reader.Read())
+            //{
+            //    person = new SalesPerson
+            //    {
+            //        ID = Convert.ToInt32(reader["ID"].ToString()),
+            //        FirstName = reader["FirstName"].ToString(),
+            //        LastName = reader["LastName"].ToString()
+            //    };
 
-                personList.Add(person);
-            }
-            conn.Close();
+            //    personList.Add(person);
+            //}
+            //conn.Close();
              
             return personList;
         }
